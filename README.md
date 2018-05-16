@@ -38,31 +38,25 @@ cd CmCode/CmLib
     	ar rcs $@ $(OBJ_FILES) <br>
 
 
-*  Compile it <br>
+*  Compile it and you will get 'libcmcode.a' and 'libcmcode.so'. Done.<br>
 ``
-make <br>
+make
 ``
 
-*  You will get 'libcmcode.a' and 'libcmcode.so' <br>
-
-*  Done. <br>
 
 
 
 ## Compile DenseCut <br>
 
-*  Open terminal and Go into 'mmcheng_densecut' foler <br>
+*  Open terminal and Go into 'mmcheng_densecut' folder <br>
 ``
 cd mmcheng_densecut
 ``
 
-*  Compile it <br>
+*  Compile it and you will get 'densecut'. Done. <br>
 ``
 g++ *.cpp -O2 -Wall -I. -lcmcode -L../CmCode/CmLib -I../ -Wl,-rpath,../CmCode/CmLib -std=c++11 `pkg-config --libs --cflags opencv` -lomp -o densecut
 ``
-
-*  You will get 'densecut'. Done. <br>
-
 
 	* Some erros occured. For example, "/usr/bin/ld: cannot find -lcufft", just locate libcufft and add the path to $LD_LIBRARY_PATH or $LIBRARY_PATH in the ~/.bashrc. <br>
 

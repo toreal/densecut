@@ -6,7 +6,14 @@
 /*      http://www.psi.toronto.edu/index.php?q=affinity%20propagation	*/
 /************************************************************************/
 
+
+#ifndef  MYCMFILE 
+typedef void* HMODULE;
+#endif
+
+
 #ifdef _WIN32
+
 
 class CmAPCluster
 {

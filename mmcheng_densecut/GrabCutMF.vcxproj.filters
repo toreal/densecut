@@ -27,6 +27,9 @@
     <ClInclude Include="CmGrabSal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\CmCode\CmLib\CmLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,9 +42,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GrabCutMF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CmGrabSal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

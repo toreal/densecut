@@ -33,6 +33,8 @@ Implemented by Chris M. Christoudias, Bogdan Georgescu
 ********************************************************/
 //include Region Adjacency List class prototype
 #include "stdafx.h"
+using namespace cv;
+
 #include	"RAList.h"
 
 //include needed libraries

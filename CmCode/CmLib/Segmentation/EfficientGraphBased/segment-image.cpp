@@ -1,6 +1,10 @@
 #include "stdafx.h"
+using namespace cv;
+
 #include "segment-graph.h"
 #include "segment-image.h"
+
+
 
 // dissimilarity measure between pixels
 static inline float diff(CMat &img3f, int x1, int y1, int x2, int y2)
@@ -112,7 +116,7 @@ void SegmentImageDemo(CStr& inImgW, CStr& outDir, double sigma, double k, int mi
 	for (int i = 0; i < imgNum; i++)
 	{
 		printf("%-40s\r", names[i].c_str());
-		Mat img3u = imread(inDir + names[i], CV_LOAD_IMAGE_COLOR);
+		Mat img3u = imread(inDir + names[i], cv::ImreadModes::IMREAD_COLOR);
 		Mat imgIdx, img3f;
 		img3u.convertTo(img3f, CV_32FC3, 1.0/255);
 		int regNum = SegmentImage(img3f, imgIdx, sigma, k, min_size);

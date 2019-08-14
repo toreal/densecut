@@ -171,7 +171,7 @@ template<class T> void CmCv::PyrUpSample(CMat &src, Mat &dst, Size sz)
 void CmCv::SaveImgRGB(CStr &fName, CMat &img)
 {
 	Mat saveImg;
-	cvtColor(img, saveImg, CV_RGB2BGR);
+	cvtColor(img, saveImg, COLOR_RGB2BGR);
 	imwrite(fName, saveImg);
 }
 

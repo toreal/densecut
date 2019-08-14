@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CmCv.h"
 
-
+using namespace cv;
 /************************************************************************/
 /* AbsAngle: Calculate magnitude and angle of vectors.					*/
 /************************************************************************/

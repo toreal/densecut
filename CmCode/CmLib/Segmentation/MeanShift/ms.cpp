@@ -43,6 +43,7 @@ Implemented by Chris M. Christoudias, Bogdan Georgescu
 ********************************************************/
 #include "stdafx.h"
 
+using namespace cv;
 //Include Needed Libraries
 
 #include	"ms.h"

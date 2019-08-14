@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CmColorQua.h"
 
+using namespace cv;
+
 const int CmColorQua::binNum[] = {6*6*6, 256, 5*7*7, 256};
 const char* CmColorQua::descr[] = {"S_BGR", "S_HSV", "S_Lab", "D_BGR"};
 const CmColorQua::S_QUANTIZE_FUNC CmColorQua::sqFuns[] = {SQ_BGR, SQ_HSV, SQ_Lab};
@@ -69,8 +71,8 @@ void CmColorQua::S_Quantize(CMat& _img3f, Mat &idx1i, int method)
 	Mat img;
 	switch (method)	{
 	case S_BGR: img = _img3f; break;
-	case S_HSV: cvtColor(_img3f, img, CV_BGR2HSV); break;
-	case S_LAB: cvtColor(_img3f, img, CV_BGR2Lab); break;
+	case S_HSV: cvtColor(_img3f, img, COLOR_BGR2HSV); break;
+	case S_LAB: cvtColor(_img3f, img, COLOR_BGR2Lab); break;
 	}
 
 	idx1i.create(img.size(), CV_32S);
@@ -112,9 +114,9 @@ int CmColorQua::S_BinInf(CMat& idx1i, Mat &color3f, vecI &colorNum, int method, 
 			totalBinNum += colorNum[i];
 	}
 	if (method == 1)
-		cvtColor(color3f, color3f, CV_HSV2BGR);
+		cvtColor(color3f, color3f, COLOR_HSV2BGR);
 	else if (method == 2)
-		cvtColor(color3f, color3f, CV_Lab2BGR);
+		cvtColor(color3f, color3f, COLOR_Lab2BGR);
 
 	for (int i = 0; i < color3f.cols; i++)
 		if (colorNum[i] > 0)
@@ -154,8 +156,8 @@ void CmColorQua::Show(CMat &counts1d, CStr title, Mat &show3f, int method)
 		}
 	}
 	switch (method)	{
-	case 1: cvtColor(color3f, color3f, CV_HSV2BGR); break;
-	case 2: cvtColor(color3f, color3f, CV_Lab2BGR); break;
+	case 1: cvtColor(color3f, color3f, COLOR_HSV2BGR); break;
+	case 2: cvtColor(color3f, color3f, COLOR_Lab2BGR); break;
 	}
 	//CmShow::HistBins(color3f, counts1d, title);
 }

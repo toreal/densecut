@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GrabCutMF.h"
 
+#define CV_LOAD_IMAGE_GRAYSCALE 0
+
 // 3, 30, 20, 10
 GrabCutMF::GrabCutMF(CMat &img3f, CMat &img3u, CStr &nameNE, float w1, float w2, float w3, float alpha, float beta, float gama, float mu)
 	:_fGMM(5), _bGMM(5), _w(img3f.cols), _h(img3f.rows)

@@ -35,6 +35,9 @@ Implemented by Chris M. Christoudias, Bogdan Georgescu
 
 //include image processor class prototype
 #include "stdafx.h"
+
+using namespace cv;
+
 #include	"msImageProcessor.h"
 
 //include needed libraries
@@ -4720,7 +4723,7 @@ void msImageProcessor::SetSpeedThreshold(float speedUpThreshold)
 int MeanShiftEdison(CMat &_img3b, Mat &idx1i, int sigmaS, float sigmaR, int minReg)
 {
 	Mat img3b;
-	cvtColor(_img3b, img3b, CV_BGR2Lab);
+	cvtColor(_img3b, img3b, COLOR_BGR2Lab);
 	msImageProcessor mss;
 	byte* imgData = new byte[img3b.cols * img3b.rows * 3];
 	for (int i = 0, step = 3*img3b.cols; i < img3b.rows; i++)

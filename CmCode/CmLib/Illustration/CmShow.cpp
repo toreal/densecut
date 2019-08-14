@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CmShow.h"
 
+using namespace cv;
+
 const Vec3b CmShow::gColors[CmShow::COLOR_NUM] = 
 {
 	Vec3b(0, 0, 255),	  Vec3b(0, 255, 0),		Vec3b(255, 0, 0),     Vec3b(153, 0, 48),	Vec3b(0, 183, 239),  
@@ -64,7 +66,7 @@ Mat CmShow::Complex(CMat& _cmplx, CStr& title, float minMagShowAng, int flag)
 		float* magV = mag.ptr<float>(y);
 		for (int x = 0; x < cmplx.cols; x++, cpV+=2){
 			magV[x] = sqrt(cpV[0] * cpV[0] + cpV[1] * cpV[1]);
-			angV[x] = cvFastArctan(cpV[1], cpV[0]);
+			angV[x] = fastAtan2(cpV[1], cpV[0]);
 		}
 	}
 	return Complex(ang, mag, title, minMagShowAng, flag);
@@ -99,7 +101,7 @@ Mat CmShow::Complex(CMat& _ang, CMat& _mag, CStr& title, float minMagShowAng, in
 	int rows = ang.rows, cols = ang.cols;
 	Mat img8U3C(rows, flag & MAG_AS_SAT ? cols : cols * 2, CV_8UC3);
 	if (!(flag & MAG_AS_SAT))
-		cvtColor(mag, img8U3C(Rect(cols, 0, cols, rows)), CV_GRAY2BGR);
+		cvtColor(mag, img8U3C(Rect(cols, 0, cols, rows)), COLOR_GRAY2BGR);
 
 	Mat showAng = img8U3C(Rect(0, 0, cols, rows));
 	Ornt2HueFunc ornt2HueFunc = flag & ORNT2HUE_SYM4 ? Ornt2HueSym4 : Ornt2Hue;
@@ -116,7 +118,7 @@ Mat CmShow::Complex(CMat& _ang, CMat& _mag, CStr& title, float minMagShowAng, in
 		}
 	}
 
-	cvtColor(showAng, showAng, CV_HSV2BGR);
+	cvtColor(showAng, showAng, COLOR_HSV2BGR);
 	SaveShow(img8U3C, title);
 	return img8U3C;
 }
@@ -136,11 +138,11 @@ void CmShow::ColorCircle(CStr &tile, int radius, int flag)
 			float x = (float)(c-radius), y = (float)(r-radius);
 			if (x*x + y*y > maxDist)
 				continue;
-			showV[0] = ornt2HueFunc(cvFastArctan(y, x));
+			showV[0] = ornt2HueFunc(fastAtan2(y, x));
 			showV[1] = showV[2] = 255;
 		}
 	}
-	cvtColor(showImg, showImg, CV_HSV2BGR);
+	cvtColor(showImg, showImg, COLOR_HSV2BGR);
 	SaveShow(showImg, tile);
 }
 
@@ -238,7 +240,7 @@ Mat CmShow::HistBins(CMat& color3f, CMat& val, CStr& title, bool descendShow, CM
 
 		x += binW[idx];
 	}
-	putText(showImg3b, format("Min = %g, Max = %g", minVal, maxVal), Point(5, 20), CV_FONT_HERSHEY_PLAIN, 1, CV_RGB(255,0,0));
+	putText(showImg3b, format("Min = %g, Max = %g", minVal, maxVal), Point(5, 20), FONT_HERSHEY_PLAIN, 1, CV_RGB(255,0,0));
 	SaveShow(showImg3b, title);
 	return showImg3b;
 }
@@ -249,7 +251,7 @@ void CmShow::Pseudocolor(CMat& matfd1, CStr& title)
 	matfd1.convertTo(hsvMat[0], CV_32FC1, -240, 240);
 	hsvMat[1] = hsvMat[2] = Mat::ones(matfd1.size(), CV_32F);
 	merge(hsvMat, 3, hsvM);
-	cvtColor(hsvM, hsvM, CV_HSV2BGR);
+	cvtColor(hsvM, hsvM, COLOR_HSV2BGR);
 	SaveShow(hsvM, title);
 }
 
@@ -283,9 +285,9 @@ void CmShow::showTinyMat(CStr &title, CMat &m)
 	}
 
 	Mat img;
-	resize(m, img, Size(), scale, scale, CV_INTER_NN);
+	resize(m, img, Size(), scale, scale, INTER_NEAREST);
 	if (img.channels() == 3)
-		cvtColor(img, img, CV_RGB2BGR);
+		cvtColor(img, img, COLOR_RGB2BGR);
 	imshow(title, img);
 	waitKey(1);
 }

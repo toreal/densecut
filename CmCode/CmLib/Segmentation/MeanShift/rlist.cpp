@@ -32,6 +32,9 @@ Implemented by Chris M. Christoudias, Bogdan Georgescu
 ********************************************************/
 
 #include "stdafx.h"
+
+using namespace cv;
+
 #include	"rlist.h"
 #include	<stdio.h>
 #include	<stdlib.h>

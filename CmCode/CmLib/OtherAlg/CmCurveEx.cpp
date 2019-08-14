@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CmCurveEx.h"
 
+using namespace cv;
+
 float const static PI_QUARTER = PI_FLOAT * 0.25f; 
 float const static PI_EIGHTH = PI_FLOAT * 0.125f;
 
@@ -529,7 +531,7 @@ CMat& CmCurveEx::CalRobustCurveEnergy(double longEdg, double lenMin, double avgM
 	for (int i = 0; i < edgNum; i++) {
 		vector<Point> &pnts = _vEdge[i].pnts; 
 		for (size_t j = 1; j < pnts.size(); j++)
-			line(_engy1f, pnts[j], pnts[j-1], edgSal1f(0, i), 2, CV_AA);
+			line(_engy1f, pnts[j], pnts[j-1], edgSal1f(0, i), 2, LINE_AA);
 		_vEdge[i].sal = edgSal1f(0, i);
 		_vEdge[i].lenSal = len1f(0, i);
 	}
@@ -557,7 +559,7 @@ void CmCurveEx::SaveShowResult(CMat &img1f, CStr &title, Mat &show3u, double lon
 	}
 	normalize(showAvg1f, showAvg1f, 0, 1, NORM_MINMAX);
 	show1f.convertTo(show1f, CV_8UC1, 255);
-	cvtColor(show1f, show3u, CV_GRAY2BGR);
+	cvtColor(show1f, show3u, COLOR_GRAY2BGR);
 	Mat showLabel3u = show3u(Rect(0, _h, _w, _h));
 
 	// Show Label
@@ -621,7 +623,7 @@ void CmCurveEx::Demo2(CStr &wkDir, bool isCartoon)
 	for (int i = 0; i < imgNum; i++) {
 		Mat inImg = imread(inDir + names[i] + ".jpg"), img1f, tmp;
 		CV_Assert(inImg.data != NULL);
-		cvtColor(inImg, img1f, CV_BGR2GRAY);
+		cvtColor(inImg, img1f, COLOR_BGR2GRAY);
 		img1f.convertTo(img1f, CV_32F, 1/255.0f);
 		GaussianBlur(img1f, img1f, Size(3, 3), 0);
 		//bilateralFilter(tmp, img1f, 3, 1, 1);

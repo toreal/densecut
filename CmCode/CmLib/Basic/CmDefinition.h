@@ -176,7 +176,7 @@ template<typename T> inline bool lessThan(const Vec<T, 2> &v1, const Vec<T, 2> &
 	if(!(expr)) {\
 	string msg = cv::format args; \
 	printf("%s in %s:%d\n", msg.c_str(), __FILE__, __LINE__); \
-	cv::error(cv::Exception(CV_StsAssert, msg, __FUNCTION__, __FILE__, __LINE__) ); }\
+	cv::error(cv::Exception(Error::StsAssert, msg, __FUNCTION__, __FILE__, __LINE__) ); }\
 }
 
 #define charPointers2StrVec(arrayOfCharPointer) (vecS(arrayOfCharPointer, std::end(arrayOfCharPointer)))
@@ -186,7 +186,7 @@ wstring s2ws(const std::string& s);
 inline double MatMin(CMat &m) {double minVal; minMaxLoc(m, &minVal, NULL); return minVal; }
 inline double MatMax(CMat &m) {double maxVal; minMaxLoc(m, NULL, &maxVal); return maxVal; }
 
-template<class T> inline Point_<T> operator / (const Point_<T> &p, double s) { return Point_<T>((T)(p.x /s), (T)(p.y/s));}
+//template<class T> inline Point_<T> operator / (const Point_<T> &p, double s) { return Point_<T>((T)(p.x /s), (T)(p.y/s));}
 template<class T> inline void operator /= (Point_<T> &p, double s) {p.x /= s, p.y /= s;}
 template<class T> inline Vec<T, 3> operator / (const Vec<T, 3> &v, double s) { return Vec<T, 3>((T)(v[0]/s), (T)(v[1]/s), (T)(v[2]/s));}
 

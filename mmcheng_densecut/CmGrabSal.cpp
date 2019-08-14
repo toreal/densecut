@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CmGrabSal.h"
 
-
+#define CV_MINMAX   32
 
 Mat getGrabSal(Mat img, Rect _rect)
 {
@@ -147,6 +147,7 @@ Mat getGrabSal2(Mat img, Rect _rect)
 		
 		//CmShow::HistBins(_HistBinClr3f, pci1f[i], format("Hist Sal %d:%g", i, salV1f[i]));
 	}
+
 	normalize(histBinSal1f, histBinSal1f, 0, 1, CV_MINMAX);
 	//CmShow::HistBins(_HistBinClr3f, histBinSal1f, "Hist Sal");
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef BOOL
-#define BOOL bool
+#ifndef CmBOOL
+#define CmBOOL bool
 #endif
 #ifndef FALSE
 #define FALSE 0
@@ -25,9 +25,9 @@
 #define FILE_ATTRIBUTE_ARCHIVE 0
 #endif
 
-#ifndef DWORD
+#ifndef CmDWORD
 #include <stdint.h>
-#define DWORD uint32_t
+#define CmDWORD uint32_t
 #endif
 
 struct CmFile
@@ -60,7 +60,7 @@ struct CmFile
 
 	static inline string GetWkDir();
 
-	static BOOL MkDir(CStr&  path);
+	static CmBOOL MkDir(CStr&  path);
 
 	// Eg: RenameImages("D:/DogImages/*.jpg", "F:/Images", "dog", ".jpg");
 	static int Rename(CStr& srcNames, CStr& dstDir, const char* nameCommon, const char* nameExt);
@@ -75,10 +75,10 @@ struct CmFile
 	static int GetSubFolders(CStr& folder, vecS& subFolders);
 	static string GetFatherFolder(CStr &folder) {return GetFolder(folder.substr(0, folder.size() - 1));}
 
-	inline static BOOL Copy(CStr &src, CStr &dst, BOOL failIfExist = FALSE);
-	inline static BOOL Move(CStr &src, CStr &dst, DWORD dwFlags = MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
-	static BOOL Move2Dir(CStr &srcW, CStr dstDir);
-	static BOOL Copy2Dir(CStr &srcW, CStr dstDir);
+	inline static CmBOOL Copy(CStr &src, CStr &dst, CmBOOL failIfExist = FALSE);
+	inline static CmBOOL Move(CStr &src, CStr &dst, CmDWORD dwFlags = MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+	static CmBOOL Move2Dir(CStr &srcW, CStr dstDir);
+	static CmBOOL Copy2Dir(CStr &srcW, CStr dstDir);
 
 	//Load mask image and threshold thus noisy by compression can be removed
 	static Mat LoadMask(CStr& fileName);
@@ -166,7 +166,7 @@ string CmFile::GetExtention(CStr name)
 	return name.substr(name.find_last_of('.'));
 }
 
-BOOL CmFile::Copy(CStr &src, CStr &dst, BOOL failIfExist)
+CmBOOL CmFile::Copy(CStr &src, CStr &dst, CmBOOL failIfExist)
 {
 #ifdef CopyFileA
 	return ::CopyFileA(src.c_str(), dst.c_str(), failIfExist);
@@ -180,7 +180,7 @@ BOOL CmFile::Copy(CStr &src, CStr &dst, BOOL failIfExist)
 #endif
 }
 
-BOOL CmFile::Move(CStr &src, CStr &dst, DWORD dwFlags)
+CmBOOL CmFile::Move(CStr &src, CStr &dst, CmDWORD dwFlags)
 {
 	return MoveFileExA(src.c_str(), dst.c_str(), dwFlags);
 }
@@ -200,7 +200,7 @@ bool CmFile::FileExist(CStr& filePath)
 {
 	if (filePath.size() == 0)
 		return false;
-	DWORD attr = GetFileAttributesA(_S(filePath));
+	CmDWORD attr = GetFileAttributesA(_S(filePath));
 	return attr == FILE_ATTRIBUTE_NORMAL ||  attr == FILE_ATTRIBUTE_ARCHIVE;//GetLastError() != ERROR_FILE_NOT_FOUND;
 }
 
@@ -215,7 +215,7 @@ string CmFile::GetWkDir()
 {
 	string wd;
 	wd.resize(1024);
-	DWORD len = GetCurrentDirectoryA(1024, &wd[0]);
+	CmDWORD len = GetCurrentDirectoryA(1024, &wd[0]);
 	wd.resize(len);
 	return wd;
 }

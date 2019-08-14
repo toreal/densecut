@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CmSaliencyRC.h"
 
+using namespace cv;
+
 const char* CmSaliencyRC::SAL_TYPE_DES[SAL_TYPE_NUM] = {
 	"RC", "HC", "FT", "LC", "SR"
 };
@@ -73,7 +75,7 @@ Mat CmSaliencyRC::GetFT(CMat &img3f)
 	CV_Assert(img3f.data != NULL && img3f.type() == CV_32FC3);
 	Mat sal(img3f.size(), CV_32F), tImg;
 	GaussianBlur(img3f, tImg, Size(3, 3), 0);
-	cvtColor(tImg, tImg, CV_BGR2Lab);
+	cvtColor(tImg, tImg, COLOR_BGR2Lab);
 	Scalar colorM = mean(tImg);
 	for (int r = 0; r < tImg.rows; r++) {
 		float *s = sal.ptr<float>(r);
@@ -90,7 +92,7 @@ Mat CmSaliencyRC::GetHC(CMat &img3f)
 	// Quantize colors and
 	Mat idx1i, binColor3f, colorNums1i, _colorSal;
 	Quantize(img3f, idx1i, binColor3f, colorNums1i);
-	cvtColor(binColor3f, binColor3f, CV_BGR2Lab);
+	cvtColor(binColor3f, binColor3f, COLOR_BGR2Lab);
 
 	GetHC(binColor3f, colorNums1i, _colorSal);
 	float* colorSal = (float*)(_colorSal.data);
@@ -125,7 +127,7 @@ Mat CmSaliencyRC::GetRC(CMat &img3f, CMat &regIdx1i, int regNum, double sigmaDis
 	if (QuatizeNum <= 2) // Color quantization
 		return Mat::zeros(img3f.size(), CV_32F);
 	
-	cvtColor(color3fv, color3fv, CV_BGR2Lab);
+	cvtColor(color3fv, color3fv, COLOR_BGR2Lab);
 	vector<Region> regs(regNum);
 	BuildRegions(regIdx1i, regs, colorIdx1i, color3fv.cols);
 	RegionContrast(regs, color3fv, regSal1v, sigmaDist);
@@ -153,7 +155,7 @@ Mat CmSaliencyRC::GetRC(CMat &img3f, CMat &regIdx1i, int regNum, double sigmaDis
 Mat CmSaliencyRC::GetRC(CMat &img3f, double sigmaDist, double segK, int segMinSize, double segSigma)
 {
 	Mat imgLab3f, regIdx1i;
-	cvtColor(img3f, imgLab3f, CV_BGR2Lab);
+	cvtColor(img3f, imgLab3f, COLOR_BGR2Lab);
 	int regNum = SegmentImage(imgLab3f, regIdx1i, segSigma, segK, segMinSize);	
 	return GetRC(img3f, regIdx1i, regNum, sigmaDist);
 }
@@ -161,7 +163,7 @@ Mat CmSaliencyRC::GetRC(CMat &img3f, double sigmaDist, double segK, int segMinSi
 Mat CmSaliencyRC::GetLC(CMat &img3f)
 {
 	Mat img;
-	cvtColor(img3f, img, CV_BGR2GRAY);
+	cvtColor(img3f, img, COLOR_BGR2GRAY);
 	img.convertTo(img, CV_8U, 255);
 	double f[256], s[256];
 	memset(f, 0, 256*sizeof(double));
@@ -189,8 +191,8 @@ Mat CmSaliencyRC::GetSR(CMat &img3f)
 {
 	Size sz(64, 64);
 	Mat img1f[2], sr1f, cmplxSrc2f, cmplxDst2f;
-	cvtColor(img3f, img1f[1], CV_BGR2GRAY);
-	resize(img1f[1], img1f[0], sz, 0, 0, CV_INTER_AREA); 
+	cvtColor(img3f, img1f[1], COLOR_BGR2GRAY);
+	resize(img1f[1], img1f[0], sz, 0, 0, INTER_AREA); 
 
 	img1f[1] = Mat::zeros(sz, CV_32F);
 	merge(img1f, 2, cmplxSrc2f);
@@ -316,7 +318,7 @@ void CmSaliencyRC::SmoothByHist(CMat &img3f, Mat &sal1f, float delta)
 	// Find similar colors & Smooth saliency value for color bins
 	vector<vector<CostfIdx>> similar(binN); // Similar color: how similar and their index
 	Vec3f* color = (Vec3f*)(binColor3f.data);
-	cvtColor(binColor3f, binColor3f, CV_BGR2Lab);
+	cvtColor(binColor3f, binColor3f, COLOR_BGR2Lab);
 	for (int i = 0; i < binN; i++){
 		vector<CostfIdx> &similari = similar[i];
 		similari.push_back(make_pair(0.f, i));
@@ -325,7 +327,7 @@ void CmSaliencyRC::SmoothByHist(CMat &img3f, Mat &sal1f, float delta)
 				similari.push_back(make_pair(vecDist<float, 3>(color[i], color[j]), j));
 		sort(similari.begin(), similari.end());
 	}
-	cvtColor(binColor3f, binColor3f, CV_Lab2BGR);
+	cvtColor(binColor3f, binColor3f, COLOR_Lab2BGR);
 	//CmShow::HistBins(binColor3f, _colorSal, "BeforeSmooth", true);
 	SmoothSaliency(colorNums1i, _colorSal, delta, similar);
 	//CmShow::HistBins(binColor3f, _colorSal, "AfterSmooth", true);

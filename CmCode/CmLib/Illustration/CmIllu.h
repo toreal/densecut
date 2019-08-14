@@ -14,7 +14,7 @@ namespace CmIllu{
 
 
 	void showColorCodes(CvecS &classNames, CStr title);
-}
+//}
 
 
 
@@ -25,7 +25,7 @@ namespace CmIllu{
 /*   T can be byte, short, or int; singed or unsigned.					*/
 /************************************************************************/
 
-namespace CmIllu{
+//namespace CmIllu{
 	template<typename T> inline void rgb2Label(const Vec3b &rgb, T &label){
 		label = 0;
 		for(int i = 0; i < 8; i++) 

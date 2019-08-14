@@ -162,12 +162,6 @@
     <ClCompile Include="Basic\CmDefinition.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
-    <ClCompile Include="Basic\CmFile.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="Cluster\CmAPCluster.cpp">
-      <Filter>Cluster</Filter>
-    </ClCompile>
     <ClCompile Include="Cluster\CmColorQua.cpp">
       <Filter>Cluster</Filter>
     </ClCompile>
@@ -242,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="Saliency\CmSalCut.cpp">
       <Filter>Saliency</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic\CmFile.cpp">
+      <Filter>Basic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

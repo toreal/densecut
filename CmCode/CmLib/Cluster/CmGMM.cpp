@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CmGMM.h"
 
+using namespace cv;
+
 
 void CmGMM::Demo(CStr &wkDir)
 {
@@ -89,7 +91,7 @@ void CmGMM::GetGMMs(CStr &smplW, CStr &annoExt, CmGMM &fGMM, CmGMM &bGMM)
 	int num = CmFile::GetNamesNE(smplW, namesNE, dir, ext);
 	int foreBinN = 0, backBinN = 0;
 	for (int i = 0; i < num; i++)	{
-		Mat mask1u = imread(dir + namesNE[i] + annoExt, CV_LOAD_IMAGE_GRAYSCALE);
+		Mat mask1u = imread(dir + namesNE[i] + annoExt, cv::ImreadModes::IMREAD_GRAYSCALE);
 		Mat img = imread(dir + namesNE[i] + ext);
 		CV_Assert(mask1u.data != NULL && img.data != NULL);
 		for (int r = 0; r < mask1u.rows; r++)	{

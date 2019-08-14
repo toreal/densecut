@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "CmEvaluation.h"
+using namespace cv;
+
 
 int CmEvaluation::STEP = 1;
 const int CmEvaluation::NUM_THRESHOLD =  COLOR_NUM / STEP + 1;
@@ -115,10 +117,10 @@ double CmEvaluation::Evaluate_(CStr &gtImgW, CStr &inDir, CStr& resExt, vecD &pr
 	for (int i = 0; i < imgNum; i++){
 		if(i % 100 == 0)
 			printf("Evaluating %03d/%d %-40s\r", i, imgNum, _S(names[i] + resExt));
-		Mat resS = imread(inDir + names[i] + resExt, CV_LOAD_IMAGE_GRAYSCALE);
+		Mat resS = imread(inDir + names[i] + resExt, cv::ImreadModes::IMREAD_GRAYSCALE);
 		CV_Assert_(resS.data != NULL, ("Can't load saliency map: %s\n", _S(names[i] + resExt)));
 		normalize(resS, resS, 0, 255, NORM_MINMAX);
-		Mat gtFM = imread(truthDir + names[i] + gtExt, CV_LOAD_IMAGE_GRAYSCALE), gtBM;
+		Mat gtFM = imread(truthDir + names[i] + gtExt, cv::ImreadModes::IMREAD_GRAYSCALE), gtBM;
 		if (gtFM.data == NULL) 
 			continue;
 		CV_Assert_(resS.size() == gtFM.size(), ("Saliency map and ground truth image size mismatch: %s\n", _S(names[i])));
@@ -197,11 +199,11 @@ void CmEvaluation::EvalueMask(CStr gtW, CStr &maskDir, vecS &des, CStr resFile, 
 	vecD pr(methodNum), rec(methodNum), count(methodNum), fm(methodNum);
 	vecD intUnio(methodNum), mae(methodNum);
 	for (int i = 0; i < imgNum; i++){
-		Mat truM = imread(gtDir + namesNS[i] + gtExt, CV_LOAD_IMAGE_GRAYSCALE);
+		Mat truM = imread(gtDir + namesNS[i] + gtExt, cv::ImreadModes::IMREAD_GRAYSCALE);
 		for (int m = 0; m < methodNum; m++)	{
 			string mapName = maskDir + namesNS[i] + "_" + des[m];
 			mapName += suffix.empty() ? ".png" : "_" + suffix + ".png";
-			Mat res = imread(mapName, CV_LOAD_IMAGE_GRAYSCALE);
+			Mat res = imread(mapName, cv::ImreadModes::IMREAD_GRAYSCALE);
 			if (truM.data == NULL || res.data == NULL || truM.size != res.size){
 				if (alertNul)
 					printf("Truth(%d, %d), Res(%d, %d): %s\n", truM.cols, truM.rows, res.cols, res.rows, _S(mapName));
@@ -273,7 +275,7 @@ void CmEvaluation::MeanAbsoluteError(CStr inDir, CStr salDir, vecS des, bool zer
 	int imgNum = CmFile::GetNamesNE(inDir + "*.jpg", namesNE), count = 0, methodNum = des.size();
 	vecD costs(des.size());
 	for (int i = 0; i < imgNum; i++){
-		Mat gt = imread(inDir + namesNE[i] + ".png", CV_LOAD_IMAGE_GRAYSCALE);
+		Mat gt = imread(inDir + namesNE[i] + ".png", cv::ImreadModes::IMREAD_GRAYSCALE);
 		if (gt.empty())	{
 			if (zeroMapIfMissing){
 				Mat img = imread(inDir + namesNE[i] + ".jpg");
@@ -287,7 +289,7 @@ void CmEvaluation::MeanAbsoluteError(CStr inDir, CStr salDir, vecS des, bool zer
 		gt.convertTo(gt, CV_32F, 1.0/255);
 #pragma omp parallel for
 		for (int j = 0; j < methodNum; j++){
-			Mat res = imread(salDir + namesNE[i] + "_" + des[j] + ".png", CV_LOAD_IMAGE_GRAYSCALE);
+			Mat res = imread(salDir + namesNE[i] + "_" + des[j] + ".png", cv::ImreadModes::IMREAD_GRAYSCALE);
 			CV_Assert_(res.data != NULL, ("Can't load file %s\n", _S(namesNE[i] + "_" + des[j] + ".png")));
 			if (res.size != gt.size){
 				printf("size don't match %s\n", _S(namesNE[i] + "_" + des[j] + ".png"));

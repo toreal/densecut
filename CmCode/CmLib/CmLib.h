@@ -41,14 +41,16 @@ using namespace std;
 #define CV_VERSION_ID CVAUX_STR(CV_MAJOR_VERSION) CVAUX_STR(CV_MINOR_VERSION) CVAUX_STR(CV_SUBMINOR_VERSION)
 #define cvLIB(name) lnkLIB("opencv_" name CV_VERSION_ID)
 
-#pragma comment( lib, cvLIB("core"))
-#pragma comment( lib, cvLIB("imgproc"))
-#pragma comment( lib, cvLIB("highgui"))
-#pragma comment(lib, cvLIB("contrib"))
+#pragma comment( lib, cvLIB("world"))
+//#pragma comment( lib, cvLIB("core"))
+//#pragma comment( lib, cvLIB("imgproc"))
+//#pragma comment( lib, cvLIB("highgui"))
+//#pragma comment(lib, cvLIB("contrib"))
+
 using namespace cv;
 
 
-// CmLib Basic coding help
+	// CmLib Basic coding help
 #include "./Basic/CmDefinition.h"
 #include "./Basic/CmTimer.h"
 #include "./Basic/CmFile.h"
@@ -119,6 +121,7 @@ using namespace cv;
 // CRFs
 #include "./CRF/fastmath.h"
 #include "./CRF/permutohedral.h"
+
 
 
 #define ToDo printf("To be implemented, %d:%s\n", __LINE__, __FILE__)

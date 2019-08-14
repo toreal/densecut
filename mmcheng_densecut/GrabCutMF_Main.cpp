@@ -6,6 +6,8 @@
 #include "GrabCutMF.h"
 #include "CmGrabSal.h"
 
+
+
 void RenameOneCutResult(CStr dir);
 
 void GetForeVsBackRatio(CStr dir);
@@ -21,7 +23,7 @@ int main(int argc, char* argv[]) {
     
 	CStr rootDir = argv[1];
 	//CStr wkDir = rootDir + "GrabCut/";
-	CStr wkDir = rootDir + "ASD/";
+	CStr wkDir = rootDir + "ASD\\";
 	printf("WkDir = %s\n", _S(wkDir));
 	
 	GrabCutMF::Demo(wkDir, 6, 10, 2, 20, 33, 3, 41); // Best setting 0.958119
@@ -102,7 +104,7 @@ void checkDataSet(CStr wkDir)
 	for (int i = 0; i < imgNum; i++){
 		CStr nameNE = scoreName[i].second, outNameNE = format("%d_", i) + scoreName[i].second;
 
-		Mat gt1u = imread(inDir + nameNE + ".png", CV_LOAD_IMAGE_GRAYSCALE);
+		Mat gt1u = imread(inDir + nameNE + ".png", cv::ImreadModes::IMREAD_GRAYSCALE);
 		blur(gt1u, gt1u, Size(3,3));
 		Rect rect = CmCv::GetMaskRange(gt1u, 6, 128);
 		Mat img = imread(inDir + nameNE + ".jpg");

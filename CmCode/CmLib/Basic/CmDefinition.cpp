@@ -1,4 +1,5 @@
 #include "stdafx.h"
+using namespace cv;
 
 Point const DIRECTION4[5] = {
 	Point(1,  0), //Direction 0: right

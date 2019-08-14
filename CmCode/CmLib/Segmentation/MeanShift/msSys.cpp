@@ -37,6 +37,9 @@ Implemented by Chris M. Christoudias, Bogdan Georgescu
 
 //include the msSystem class prototype
 #include "stdafx.h"
+
+using namespace cv;
+
 #include	"msSys.h"
 
 //include needed system libraries

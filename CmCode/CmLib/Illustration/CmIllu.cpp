@@ -1,14 +1,20 @@
 #include "stdafx.h"
-#include "CmIllu.h"
+using namespace cv;
 
-namespace CmIllu{
+#include "CmIllu.h"
+using namespace CmIllu;
+
+
+
+//namespace CmIllu{
 
 	void showColorCodes(CvecS &classNames, CStr title){
 		const int N = (int)classNames.size(), hC = 32, w = 150;
 		vector<Vec3b> colors(N);
 		Mat show3u(hC * N, w, CV_8UC3);
 		for (int i = 0; i < N; i++){
-			label2Rgb((byte)i, colors[i]);
+			cv::byte c = i;
+			label2Rgb(c, colors[i]);
 			Scalar color = Scalar(colors[i]);
 			show3u(Rect(0, hC*i, w, hC)) = color;
 			Scalar textColor = color[0] + color[1] + color[2] - 128*3 > 0 ? Scalar() : CmShow::WHITE;
@@ -18,4 +24,4 @@ namespace CmIllu{
 	}
 
 
-}
+//}

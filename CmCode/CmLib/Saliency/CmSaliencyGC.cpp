@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "CmSaliencyGC.h"
 
+using namespace cv;
+
+#define CV_MINMAX 32
+
+
 CmSaliencyGC::CmSaliencyGC(CMat &img3f, CStr &outName, bool GET_CSD)
 	:_gmm(DEFAULT_GMM_NUM), _img3f(img3f), _nameNE(outName), _GET_CSD(GET_CSD)
 {
@@ -199,7 +204,7 @@ void CmSaliencyGC::GetGU(vecD& gc, vecD &d, double sigmaDist, double dominate)
 	Mat_<double> clrDist;
 	clrDist = Mat_<double>::zeros(_NUM, _NUM);
 	vector<Vec3f> gmmClrs(_NUM);
-	cvtColor(_gmmClrs, gmmClrs, CV_BGR2Lab);
+	cvtColor(_gmmClrs, gmmClrs, COLOR_BGR2Lab);
 	vecD maxDist(_NUM);
 	for (int i = 0; i < _NUM; i++) for (int j = 0; j < i; j++){
 		double dCrnt = vecDist(gmmClrs[i], gmmClrs[j]);
